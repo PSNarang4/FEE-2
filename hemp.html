@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRoots Hemp Products</title>
+    <link rel="stylesheet" href="hemp.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        /* Sliding Nav Bar Animation */
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Animation for product cards */
+        .product {
+            transition: transform 0.3s ease;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+
+        /* Cart icon styling */
+        .cart-icon {
+            position: relative;
+        }
+        #cart-count {
+            position: absolute;
+            top: -8px;
+            right: 18px;
+            background: red;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 50%;
+            padding: 2px 6px;
+            display: inline-block;
+        }
+
+        /* Container for logo and navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    transition: transform 0.5s ease;
+}
+nav ul.hidden {
+    transform: translateX(-100%);
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/WhatsApp Image 2024-10-27 at 12.34.56_c97a99e3.jpg" alt="logo" height="100px">
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="cart-icon"> 
+            <a href="cart.html"><img src="images/cart.png" height="30px"><span id="cart-count">0</span></a>
+        </div>
+    </header>
+
+    <main>
+       <center> <section id="products">
+            <!-- Products will be dynamically loaded here -->
+        </section></center>
+    </main>
+
+    <script>
+        const products = [
+            { name: 'Organic Hemp Oil', price: 1500.00, img: 'https://149360778.v2.pressablecdn.com/wp-content/uploads/2019/09/81ajWtKKFUL._SL1500_.jpg', detail: 'Pure, cold-pressed hemp seed oil' },
+            { name: 'Hemp Protein Powder', price: 2000.00, img: 'https://cdn.shopify.com/s/files/1/0063/4814/4709/products/466378_Hemp_Protein_New_Bag_Design_072619_2048x.jpg?v=1574275666', detail: 'Hemp Protein Powder' },
+            { name: 'Hemp Wallet', price: 500.00, img: 'https://i.etsystatic.com/9699639/r/il/4a6cb8/2426215071/il_1588xN.2426215071_4q2a.jpg', detail: 'High Quality Hemp Wallet' },
+            { name: 'Organic Hemp Seeds', price: 1500.00, img: 'https://www.cityhealth.com.au/assets/full/609728259181.jpg?20181203141611', detail: 'Pure, Organic hemp seeds' },
+            { name: 'Hemp Peanut Butter', price: 1500.00, img: 'images/image_2024-10-25_095149233-removebg-preview.png', detail: 'Hemp Peanut Butter' },
+            { name: 'French Vanilla Protein Powder', price: 2000.00, img: 'images/Screenshot_2024-10-25_094551-removebg-preview.png', detail: 'High-quality plant-based protein' },
+            { name: 'Hemp Sativa Powder', price: 2000.00, img: 'images/image_2024-10-25_100402234-removebg-preview.png', detail: 'Ayurvedic Hemp Powder' },
+            { name: 'Coffee Hemp Spread', price: 2000.00, img: 'images/image_2024-10-25_100538099-removebg-preview.png', detail: 'Try Coffee in a different way' }
+        ];
+
+        function loadProducts() {
+            const productContainer = document.getElementById('products');
+            productContainer.innerHTML = '';
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product');
+                productDiv.innerHTML = `
+                    <img src="${product.img}" alt="${product.name}" height="150px" width="150px">
+                    <h3>${product.name}</h3>
+                    <p> &#8377;${product.price}</p>
+                    <p>${product.detail}</p>
+                    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                `;
+                productContainer.appendChild(productDiv);
+            });
+        }
+
+        loadProducts();
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                alert('Enter key pressed');
+            }
+        });
+
+        document.querySelectorAll('.product h3').forEach((element, index) => {
+            element.addEventListener('click', () => {
+                element.textContent = `Clicked: ${products[index].name}`;
+            });
+        });
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cartCount = cart.length;
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price });
+            cartCount++;
+            updateCartIcon();
+            saveCart();
+        }
+
+        function updateCartIcon() {
+            document.getElementById('cart-count').textContent = cartCount;
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        updateCartIcon();
+
+        async function fetchProductData() {
+            try {
+                const response = await fetch('https://api.example.com/products');
+                const data = await response.json();
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+        document.querySelector('.menu-button').addEventListener('click', () => {
+    document.querySelector('nav ul').classList.toggle('hidden');
+});
+
+    </script>
+</body>
+</html>

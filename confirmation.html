@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="cart.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #b0bf9e;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+main{
+    background-color: #4a5d4e;
+}
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .confirmation-message {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            border: 2px solid #b0bf9e;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        header h2 {
+            color: #4a5d4e;
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .confirmation-message h3 {
+            color: #4a5d4e;
+            margin-bottom: 10px;
+        }
+
+        .order-details p, .order-details ul {
+            text-align: left;
+            color: #333;
+        }
+
+        .order-details ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .order-details ul li {
+            padding: 5px 0;
+        }
+
+        .return-home {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #b0bf9e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .return-home:hover {
+            background-color: #a0af8e;
+        }
+
+        .ecocoins {
+            font-weight: bold;
+            color: #4a5d4e;
+        }
+        .ee{
+            background-color: #b0bf9e;
+        }
+    </style>
+</head>
+<body>
+    <img src="images/WhatsApp Image 2024-10-27 at 12.34.56_c97a99e3.jpg" alt="EcoRoots Logo" class="logo">
+    <main class="ee">
+        <section class="confirmation-message">
+            <header>
+                <h2>Order Confirmation</h2>
+            </header>
+            <h3>Thank you for your order!</h3>
+            <p>Your order has been placed successfully. Here are your order details:</p>
+
+            <div id="order-details" class="order-details"></div>
+            <p class="ecocoins" id="ecocoins-earned"></p>
+            <a href="hemp.html" class="return-home">Return to Home</a>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderDetails = JSON.parse(localStorage.getItem('lastOrder'));
+            const orderDetailsDiv = document.getElementById('order-details');
+            const ecocoinsEarnedDiv = document.getElementById('ecocoins-earned');
+
+            if (orderDetails) {
+                const ecoCoinsEarned = Math.floor(orderDetails.total / 50);
+                orderDetailsDiv.innerHTML = `
+                    <p><strong>Order Date:</strong> ${orderDetails.orderDate}</p>
+                    <p><strong>Shipping Address:</strong> ${orderDetails.address}</p>
+                    <p><strong>Payment Method:</strong> ${orderDetails.paymentMethod}</p>
+                    <p><strong>Total:</strong> ₹${orderDetails.total}</p>
+                    <p><strong>Items:</strong></p>
+                    <ul>
+                        ${orderDetails.items.map(item => `<li>${item.name} x ${item.quantity}</li>`).join('')}
+                    </ul>
+                `;
+                ecocoinsEarnedDiv.innerHTML = `You earned <strong>${ecoCoinsEarned} EcoCoins</strong> for this purchase!`;
+            } else {
+                orderDetailsDiv.innerHTML = '<p>No recent orders found.</p>';
+                ecocoinsEarnedDiv.innerHTML = '';
+            }
+        });
+    </script>
+</body>
+</html>

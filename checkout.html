@@ -1,0 +1,139 @@
+<!-- checkout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Organic Hemp Products</title>
+    <link rel="stylesheet" href="cart.css">
+    <style>
+        /* Basic styling for checkout form */
+   header img{
+    height: 90px;
+    width: 90px;
+    border-radius: 20px;
+   }
+   body{
+    background-color: #9EB0BF;
+   }
+        .checkout-form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #6e2121;
+            border-radius: 5px;
+            background-color: rgba(176,191,158,255);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .checkout-form input, .checkout-form select, .checkout-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        .checkout-form button {
+            background-color: #4CAF50;
+            color: beige;
+            border: none;
+            cursor: pointer;
+        }
+        .checkout-form button:hover {
+            background-color: #45a049;
+        }
+        .main{
+            background-color: rgba(176,191,158,255);
+           
+        }
+        #ee{
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+size: 10px;
+        }
+        .rr{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="images/WhatsApp Image 2024-10-27 at 12.34.56_c97a99e3.jpg" alt="Logo">
+     <center id="ee">   <h2>Checkout</h2></center>
+    </header>
+
+    <main>
+        <section class="checkout-form">
+            <h3>Shipping Address</h3>
+            <input type="text" id="address" placeholder="Enter your address" required>
+            
+            <h3>Payment Method</h3>
+            <select id="payment-method" class="rr" onchange="showPaymentDetails()" required>
+                <option value="">Select Payment Method</option>
+                <option value="UPI">UPI</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="Net Banking">Net Banking</option>
+            </select>
+        
+            <div id="card-details" style="display: none;">
+                <input type="text" placeholder="Card Number" required>
+                <input type="text" placeholder="Expiry Date (MM/YY)" required>
+                <input type="text" placeholder="CVV" required>
+            </div>
+        
+            <div id="upi-scanner" style="display: none;">
+                <img src="images/WhatsApp Image 2024-10-27 at 13.27.00_79373e4e.jpg" alt="Scan to pay with UPI" style="width: 200px;">
+                <p>Scan to pay with any UPI app</p>
+            </div>
+        
+            <h3>Total: ₹<span id="checkout-total">0.00</span></h3>
+        
+            <button onclick="placeOrder()">Place Order</button>
+        </section>
+        
+    </main>
+
+    <script>
+        // Load cart total from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalAmount = localStorage.getItem('totalAmount');
+            document.getElementById('checkout-total').textContent = totalAmount || '0.00';
+        });
+
+        // Place order function
+        function placeOrder() {
+            const address = document.getElementById('address').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+
+            if (!address || !paymentMethod) {
+                alert('Please enter your address and select a payment method.');
+                return;
+            }
+
+            // Retrieve cart and total from localStorage
+            const cart = JSON.parse(localStorage.getItem('lastCart'));
+            const total = localStorage.getItem('totalAmount');
+
+            // Save order details to localStorage
+            const orderDetails = {
+                items: cart,
+                total,
+                address,
+                paymentMethod,
+                orderDate: new Date().toLocaleString()
+            };
+            localStorage.setItem('lastOrder', JSON.stringify(orderDetails));
+
+            alert('Order placed successfully!');
+            localStorage.removeItem('lastCart');
+            localStorage.removeItem('totalAmount');
+
+            window.location.href = 'confirmation.html';
+        }
+        function showPaymentDetails() {
+    const paymentMethod = document.getElementById('payment-method').value;
+    document.getElementById('card-details').style.display = paymentMethod.includes('Card') ? 'block' : 'none';
+    document.getElementById('upi-scanner').style.display = paymentMethod === 'UPI' ? 'block' : 'none';
+}
+
+    </script>
+</body>
+</html>
